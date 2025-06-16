@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class ClubManager : MonoBehaviour
 {
-    [SerializeField] private string _name;
+    [SerializeField] private string _playerName;
 
     public void SetName(TMP_InputField inputField)
     {
@@ -21,6 +21,10 @@ public class ClubManager : MonoBehaviour
         }
         else
         {
+            _playerName = input;
+            
+            UIManager.Instance.SetNameOnPanel(_playerName);
+            
             DOVirtual.DelayedCall(0.3f, (() =>
             {
                 UIManager.Instance.ShowPopup(Popups.NameEnter);

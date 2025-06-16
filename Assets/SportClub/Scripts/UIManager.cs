@@ -36,6 +36,8 @@ public class UIManager : MonoBehaviour
    [SerializeField] private float _timeWarning;
    [SerializeField] private float _timePopup;
 
+   [SerializeField] private TextMeshProUGUI _namePanelText;
+   
    [Header("Warnings")]
    [SerializeField] private WarningEntry[] _warningEntries;
 
@@ -83,6 +85,11 @@ public class UIManager : MonoBehaviour
          HandlePopup(popupPanel);
    }
 
+   public void SetNameOnPanel(string name)
+   {
+      _namePanelText.text = $"Great name \n{name}!";
+   }
+    
    private void HandleWarning(TextMeshProUGUI text)
    {
       text.DOFade(1, _timeWarning)
