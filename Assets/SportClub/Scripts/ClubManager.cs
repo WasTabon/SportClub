@@ -1,4 +1,5 @@
 using System.Text.RegularExpressions;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 
@@ -20,7 +21,10 @@ public class ClubManager : MonoBehaviour
         }
         else
         {
-            Debug.Log(_name);
+            DOVirtual.DelayedCall(0.3f, (() =>
+            {
+                UIManager.Instance.ShowPopup(Popups.NameEnter);
+            }));
         }
         
     }

@@ -4,6 +4,20 @@ using DG.Tweening;
 using TMPro;
 using UnityEngine;
 
+[Serializable]
+public struct WarningEntry
+{
+   public Warnings Type;
+   public TextMeshProUGUI Text;
+}
+
+[Serializable]
+public struct PopupEntry
+{
+   public Popups Type;
+   public RectTransform Panel;
+}
+
 public enum Warnings
 {
    EnterName,
@@ -20,25 +34,34 @@ public class UIManager : MonoBehaviour
    public static UIManager Instance;
 
    [SerializeField] private float _timeWarning;
-   
+   [SerializeField] private float _timePopup;
+
    [Header("Warnings")]
-   [SerializeField] private TextMeshProUGUI _warningEnterName;
-   [SerializeField] private TextMeshProUGUI _warningEnterEnglishName;
+   [SerializeField] private WarningEntry[] _warningEntries;
 
    [Header("Popups")] 
-   [SerializeField] private RectTransform _nameEnterPanel;
-   
-   private List<TextMeshProUGUI> _warnings;
-   private List<RectTransform> _popups;
+   [SerializeField] private PopupEntry[] _popupEntries;
+
+   private Dictionary<Warnings, TextMeshProUGUI> _warnings;
+   private Dictionary<Popups, RectTransform> _popups;
 
    private void Awake()
    {
       Instance = this;
-      _warnings = new List<TextMeshProUGUI>();
-      _popups = new List<RectTransform>();
-      
-      AddToList(_warnings, _warningEnterName, _warningEnterEnglishName);
-      AddToList(_popups, _nameEnterPanel);
+      _warnings = new Dictionary<Warnings, TextMeshProUGUI>();
+      _popups = new Dictionary<Popups, RectTransform>();
+
+      foreach (var entry in _warningEntries)
+      {
+         if (!_warnings.ContainsKey(entry.Type))
+            _warnings.Add(entry.Type, entry.Text);
+      }
+
+      foreach (var entry in _popupEntries)
+      {
+         if (!_popups.ContainsKey(entry.Type))
+            _popups.Add(entry.Type, entry.Panel);
+      }
    }
 
    private void Start()
@@ -50,57 +73,46 @@ public class UIManager : MonoBehaviour
    public void ShowWarning(Warnings warning)
    {
       ResetAllWarnings();
-
-      switch (warning)
-      {
-         case Warnings.EnterName:
-            FadeWarning(_warningEnterName);
-            break;
-         case Warnings.EnterEnglishName:
-            FadeWarning(_warningEnterEnglishName);
-            break;
-      }
+      if (_warnings.TryGetValue(warning, out var warningText))
+         HandleWarning(warningText);
    }
 
    public void ShowPopup(Popups popup)
    {
-      switch (popup)
-      {
-         case Popups.NameEnter:
-            _nameEnterPanel.DOScale(Vector3.one, 0.5f);
-            break;
-      }
+      if (_popups.TryGetValue(popup, out var popupPanel))
+         HandlePopup(popupPanel);
    }
 
-   private void FadeWarning(TextMeshProUGUI text)
+   private void HandleWarning(TextMeshProUGUI text)
    {
       text.DOFade(1, _timeWarning)
-         .OnComplete((() =>
-         {  
+         .OnComplete(() =>
+         {
             DOVirtual.DelayedCall(1f, () =>
             {
                text.DOFade(0, _timeWarning);
             });
-         }));
+         });
    }
-   
-   private void AddToList<T>(List<T> targetList, params T[] items)
+
+   private void HandlePopup(RectTransform rectTransform)
    {
-      targetList.AddRange(items);
+      rectTransform.DOScale(Vector3.one, _timePopup)
+         .OnComplete(() =>
+         {
+            
+         });
    }
-   
+
    private void ResetAllWarnings()
    {
-      foreach (TextMeshProUGUI warning in _warnings)
-      {
+      foreach (var warning in _warnings.Values)
          warning.DOFade(0f, 0f);
-      }
    }
+
    private void ResetAllPopups()
    {
-      foreach (RectTransform popup in _popups)
-      {
+      foreach (var popup in _popups.Values)
          popup.DOScale(Vector3.zero, 0f);
-      }
    }
 }
