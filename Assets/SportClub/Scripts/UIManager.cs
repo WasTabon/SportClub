@@ -33,10 +33,14 @@ public class UIManager : MonoBehaviour
 {
    public static UIManager Instance;
 
+   [SerializeField] private float _timeOpenPanel;
+   [SerializeField] private float _timeClosePanel;
+   
    [SerializeField] private float _timeWarning;
    [SerializeField] private float _timePopup;
 
    [SerializeField] private TextMeshProUGUI _namePanelText;
+   [SerializeField] private TextMeshProUGUI _nameClubTabText;
    
    [Header("Warnings")]
    [SerializeField] private WarningEntry[] _warningEntries;
@@ -72,6 +76,16 @@ public class UIManager : MonoBehaviour
       ResetAllPopups();
    }
 
+   public void ClosePanel(RectTransform panel)
+   {
+      panel.DOScale(Vector3.zero, _timeClosePanel);
+   }
+
+   public void OpenPanel(RectTransform panel)
+   {
+      panel.DOScale(Vector3.one, _timeOpenPanel);
+   }
+    
    public void ShowWarning(Warnings warning)
    {
       ResetAllWarnings();
@@ -88,6 +102,7 @@ public class UIManager : MonoBehaviour
    public void SetNameOnPanel(string name)
    {
       _namePanelText.text = $"Great name \n{name}!";
+      _nameClubTabText.text = $"Fan Club \"{name}\"";
    }
     
    private void HandleWarning(TextMeshProUGUI text)
