@@ -36,22 +36,18 @@ public class TabsHandler : MonoBehaviour
     {
         var oldPanel = _tabs[oldIndex].Panel.GetComponent<RectTransform>();
         var newPanel = _tabs[newIndex].Panel.GetComponent<RectTransform>();
-
-        // Анимации: отключить после выезда, включить перед въездом
+        
         newPanel.gameObject.SetActive(true);
 
         float width = ((RectTransform)oldPanel.parent).rect.width;
         float direction = newIndex > oldIndex ? 1 : -1;
 
-        // Ставим новую панель за пределы экрана
         newPanel.anchoredPosition = new Vector2(direction * width, 0);
 
-        // Анимация старой панели
         oldPanel.DOAnchorPosX(-direction * width, _panelMoveDuration)
             .SetEase(Ease.InOutQuad)
             .OnComplete(() => oldPanel.gameObject.SetActive(false));
 
-        // Анимация новой панели
         newPanel.DOAnchorPosX(0, _panelMoveDuration)
             .SetEase(Ease.InOutQuad);
     }
