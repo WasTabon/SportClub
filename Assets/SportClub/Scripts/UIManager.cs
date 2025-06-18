@@ -26,7 +26,8 @@ public enum Warnings
 
 public enum Popups
 {
-   NameEnter
+   NameEnter,
+   PRPopupSure
 }
 
 public class UIManager : MonoBehaviour
