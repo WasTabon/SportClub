@@ -6,7 +6,9 @@ using UnityEngine.UI;
 public enum BuffType
 {
     ViralBuff,
-    NegativeReactionBuff
+    NegativeReactionBuff,
+    FansUnited,
+    FansConflitct
 }
 
 public class BuffsManager : MonoBehaviour
@@ -17,6 +19,9 @@ public class BuffsManager : MonoBehaviour
     [SerializeField] private RectTransform _buff;
 
     [SerializeField] private Sprite _viralIcon;
+    [SerializeField] private Sprite _negativeReactionIcon;
+    [SerializeField] private Sprite _fansUnitedIcon;
+    [SerializeField] private Sprite _fansConflictIcon;
 
     private void Awake()
     {
@@ -46,6 +51,10 @@ public class BuffsManager : MonoBehaviour
                 return "+20% to income";
             case BuffType.NegativeReactionBuff:
                 return "-10% to loyalty";
+            case BuffType.FansUnited:
+                return "+10% to loyalty";
+            case BuffType.FansConflitct:
+                return "-10% to reputation";
             default:
                 return "";
         }
@@ -58,7 +67,11 @@ public class BuffsManager : MonoBehaviour
             case BuffType.ViralBuff:
                 return _viralIcon;
             case BuffType.NegativeReactionBuff:
-                return _viralIcon;
+                return _negativeReactionIcon;
+            case BuffType.FansUnited:
+                return _fansUnitedIcon;
+            case BuffType.FansConflitct:
+                return _fansConflictIcon;
             default:
                 return null;
         }
@@ -73,6 +86,12 @@ public class BuffsManager : MonoBehaviour
                 break;
             case BuffType.NegativeReactionBuff:
                 UIManager.Instance.ShowPopup(Popups.BuffNegativeReaction);
+                break;
+            case BuffType.FansUnited:
+                UIManager.Instance.ShowPopup(Popups.BuffUnited);
+                break;
+            case BuffType.FansConflitct:
+                UIManager.Instance.ShowPopup(Popups.BuffConflict);
                 break;
         }
     }

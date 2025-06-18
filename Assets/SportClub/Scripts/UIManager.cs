@@ -29,7 +29,9 @@ public enum Popups
    NameEnter,
    PRPopupSure,
    BuffViral,
-   BuffNegativeReaction
+   BuffNegativeReaction,
+   BuffUnited,
+   BuffConflict
 }
 
 public class UIManager : MonoBehaviour

@@ -34,20 +34,30 @@ public class ActionsManager : MonoBehaviour
         DOVirtual.DelayedCall(5f, (() =>
         {
             UIManager.Instance._loadingScreen.DOScale(Vector3.zero, 0.15f);
-            
-            if (_actionType == ActionType.Launch)
-            {
-                int randomBuff = Random.Range(0, 100);
 
-                if (randomBuff < 50)
-                {
-                    BuffsManager.Instance.AddBuff(BuffType.ViralBuff);
-                }
-                else
-                {
-                    BuffsManager.Instance.AddBuff(BuffType.NegativeReactionBuff);
-                }
+            switch (_actionType)
+            {
+                case ActionType.Launch:
+                    ActivateActionBuff(BuffType.ViralBuff, BuffType.NegativeReactionBuff);
+                    break;
+                case ActionType.Organize:
+                    ActivateActionBuff(BuffType.FansUnited, BuffType.FansConflitct);
+                    break;
             }
         }));
+    }
+
+    private void ActivateActionBuff(BuffType goodType, BuffType badType)
+    {
+        int randomBuff = Random.Range(0, 100);
+
+        if (randomBuff < 50)
+        {
+            BuffsManager.Instance.AddBuff(goodType);
+        }
+        else
+        {
+            BuffsManager.Instance.AddBuff(badType);
+        }
     }
 }
