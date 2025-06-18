@@ -11,10 +11,17 @@ public enum BuffType
 
 public class BuffsManager : MonoBehaviour
 {
+    public static BuffsManager Instance;
+    
     [SerializeField] private RectTransform _content;
     [SerializeField] private RectTransform _buff;
 
     [SerializeField] private Sprite _viralIcon;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     public void AddBuff(BuffType buffType)
     {
@@ -27,6 +34,8 @@ public class BuffsManager : MonoBehaviour
 
         icon.sprite = sprite;
         text.text = description;
+
+        GetPopupByType(buffType);
     }
 
     private string GetDescriptionByType(BuffType buffType)
@@ -52,6 +61,19 @@ public class BuffsManager : MonoBehaviour
                 return _viralIcon;
             default:
                 return null;
+        }
+    }
+
+    private void GetPopupByType(BuffType buffType)
+    {
+        switch (buffType)
+        {
+            case BuffType.ViralBuff:
+                UIManager.Instance.ShowPopup(Popups.BuffViral);
+                break;
+            case BuffType.NegativeReactionBuff:
+                UIManager.Instance.ShowPopup(Popups.BuffNegativeReaction);
+                break;
         }
     }
 }

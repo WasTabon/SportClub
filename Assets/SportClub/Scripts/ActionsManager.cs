@@ -1,3 +1,4 @@
+using DG.Tweening;
 using UnityEngine;
 
 public enum ActionType
@@ -14,21 +15,39 @@ public class ActionsManager : MonoBehaviour
     public void SetActionTypeLaunch()
     {
         _actionType = ActionType.Launch;
+        UIManager.Instance.ShowPopup(Popups.PRPopupSure);
     }
     public void SetActionTypeOrganize()
     {
         _actionType = ActionType.Organize;
+        UIManager.Instance.ShowPopup(Popups.PRPopupSure);
     }
     public void SetActionTypeClear()
     {
         _actionType = ActionType.Clear;
+        UIManager.Instance.ShowPopup(Popups.PRPopupSure);
     }
 
     public void HandleActionType()
     {
-        if (_actionType == ActionType.Launch)
+        UIManager.Instance._loadingScreen.DOScale(Vector3.one, 0.15f);
+        DOVirtual.DelayedCall(5f, (() =>
         {
+            UIManager.Instance._loadingScreen.DOScale(Vector3.zero, 0.15f);
             
-        }
+            if (_actionType == ActionType.Launch)
+            {
+                int randomBuff = Random.Range(0, 100);
+
+                if (randomBuff < 50)
+                {
+                    BuffsManager.Instance.AddBuff(BuffType.ViralBuff);
+                }
+                else
+                {
+                    BuffsManager.Instance.AddBuff(BuffType.NegativeReactionBuff);
+                }
+            }
+        }));
     }
 }

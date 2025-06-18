@@ -27,13 +27,17 @@ public enum Warnings
 public enum Popups
 {
    NameEnter,
-   PRPopupSure
+   PRPopupSure,
+   BuffViral,
+   BuffNegativeReaction
 }
 
 public class UIManager : MonoBehaviour
 {
    public static UIManager Instance;
 
+   public RectTransform _loadingScreen;
+   
    [SerializeField] private float _timeOpenPanel;
    [SerializeField] private float _timeClosePanel;
    
@@ -75,6 +79,8 @@ public class UIManager : MonoBehaviour
    {
       ResetAllWarnings();
       ResetAllPopups();
+      
+      _loadingScreen.DOScale(Vector3.zero, 0f);
    }
 
    public void ClosePanel(RectTransform panel)
@@ -120,6 +126,9 @@ public class UIManager : MonoBehaviour
 
    private void HandlePopup(RectTransform rectTransform)
    {
+      if (!rectTransform.gameObject.activeSelf)
+         rectTransform.gameObject.SetActive(true);
+      
       rectTransform.DOScale(Vector3.one, _timePopup)
          .OnComplete(() =>
          {
@@ -142,7 +151,9 @@ public class UIManager : MonoBehaviour
       foreach (var popup in _popups.Values)
       {
          if (!popup.gameObject.activeSelf)
+         {
             Debug.LogError($"Popup {popup.gameObject.name} is disabled", popup.gameObject);
+         }
          popup.DOScale(Vector3.zero, 0f);
       }
    }

@@ -53,6 +53,16 @@ public class loadingbar : MonoBehaviour {
                 }
             }
         }
+        else
+        {
+            imageComp.fillAmount = 0.0f;
+            currentFrame = 0;
+            textTimer = 0f;
+            if (textComp != null)
+            {
+                textComp.text = loadingFrames[0];
+            }
+        }
     }
 
     public void ResetBar()
