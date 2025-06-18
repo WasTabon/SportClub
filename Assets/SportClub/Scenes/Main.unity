@@ -2457,7 +2457,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Content: {fileID: 2059492423}
   m_Horizontal: 1
-  m_Vertical: 1
+  m_Vertical: 0
   m_MovementType: 1
   m_Elasticity: 0.1
   m_Inertia: 1
@@ -7520,6 +7520,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4e39e1d224dacd44ad00d0c86976d85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _content: {fileID: 2059492423}
+  _buff: {fileID: 8930163220627941131, guid: bb7f07d5ff270fb4f86931f461e09d49, type: 3}
+  _viralIcon: {fileID: 0}
 --- !u!1 &1241650081
 GameObject:
   m_ObjectHideFlags: 0
