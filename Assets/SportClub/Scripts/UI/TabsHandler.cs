@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -20,6 +21,11 @@ public class TabsHandler : MonoBehaviour
 
     private int _currentTabIndex = 0;
     private bool _indicatorSized = false;
+
+    private void Start()
+    {
+        Debug.Log($"<color=yellow> Tabs Handler: All tabs exept first one should be disabled when game starts</color>");
+    }
 
     public void OpenTabByButton(Button clickedButton)
     {

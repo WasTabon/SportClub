@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
@@ -19,6 +20,11 @@ public class SlidePanelHandler : MonoBehaviour
                 _originalPositions[panel] = panel.anchoredPosition;
             }
         }
+    }
+
+    private void Start()
+    {
+        Debug.Log($"<color=yellow> Slide Panel Handler: All panels should be disabled when game starts</color>");
     }
 
     public void OpenPanel(RectTransform panel)

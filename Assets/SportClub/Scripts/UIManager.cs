@@ -130,12 +130,20 @@ public class UIManager : MonoBehaviour
    private void ResetAllWarnings()
    {
       foreach (var warning in _warnings.Values)
+      {
+         if (!warning.gameObject.activeSelf)
+            Debug.LogError($"Warning {warning.gameObject.name} is disabled", warning.gameObject);
          warning.DOFade(0f, 0f);
+      }
    }
 
    private void ResetAllPopups()
    {
       foreach (var popup in _popups.Values)
+      {
+         if (!popup.gameObject.activeSelf)
+            Debug.LogError($"Popup {popup.gameObject.name} is disabled", popup.gameObject);
          popup.DOScale(Vector3.zero, 0f);
+      }
    }
 }
