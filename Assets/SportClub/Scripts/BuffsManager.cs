@@ -98,7 +98,7 @@ public class BuffsManager : MonoBehaviour
                 UIManager.Instance.ShowPopup(Popups.BuffConflict);
                 break;
             case BuffType.CleanStreets:
-                UIManager.Instance.ShowPopup(Popups.BuffConflict);
+                UIManager.Instance.ShowPopup(Popups.BuffCleanSteets);
                 break;
         }
     }

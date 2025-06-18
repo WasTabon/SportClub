@@ -43,6 +43,9 @@ public class ActionsManager : MonoBehaviour
                 case ActionType.Organize:
                     ActivateActionBuff(BuffType.FansUnited, BuffType.FansConflitct);
                     break;
+                case ActionType.Clear:
+                    ActivateActionBuff(BuffType.CleanStreets, BuffType.CleanStreets);
+                    break;
             }
         }));
     }
