@@ -5,7 +5,10 @@ public enum ActionType
 {
     Launch,
     Organize,
-    Clear
+    Clear,
+    Appoint,
+    Restructure,
+    Calm
 }
 
 public class ActionsManager : MonoBehaviour
@@ -14,18 +17,28 @@ public class ActionsManager : MonoBehaviour
 
     public void SetActionTypeLaunch()
     {
-        _actionType = ActionType.Launch;
-        UIManager.Instance.ShowPopup(Popups.PRPopupSure);
+        SetActionHandler(ActionType.Launch, Popups.PRPopupSure);
     }
     public void SetActionTypeOrganize()
     {
-        _actionType = ActionType.Organize;
-        UIManager.Instance.ShowPopup(Popups.PRPopupSure);
+        SetActionHandler(ActionType.Organize, Popups.PRPopupSure);
     }
     public void SetActionTypeClear()
     {
-        _actionType = ActionType.Clear;
-        UIManager.Instance.ShowPopup(Popups.PRPopupSure);
+        SetActionHandler(ActionType.Clear, Popups.PRPopupSure);
+    }
+
+    public void SetActionTypeAppoint()
+    {
+        SetActionHandler(ActionType.Appoint, Popups.ManagementPopupSure);
+    }
+    public void SetActionTypeRestructure()
+    {
+        SetActionHandler(ActionType.Restructure, Popups.ManagementPopupSure);
+    }
+    public void SetActionTypeCalm()
+    {
+        SetActionHandler(ActionType.Calm, Popups.ManagementPopupSure);
     }
 
     public void HandleActionType()
@@ -50,6 +63,12 @@ public class ActionsManager : MonoBehaviour
         }));
     }
 
+    private void SetActionHandler(ActionType actionType, Popups popup)
+    {
+        _actionType = actionType;
+        UIManager.Instance.ShowPopup(popup);
+    }
+    
     private void ActivateActionBuff(BuffType goodType, BuffType badType)
     {
         int randomBuff = Random.Range(0, 100);
