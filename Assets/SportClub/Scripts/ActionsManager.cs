@@ -50,7 +50,7 @@ public class ActionsManager : MonoBehaviour
     private void ActivateActionBuff(BuffType goodType, BuffType badType)
     {
         int randomBuff = Random.Range(0, 100);
-
+        
         if (randomBuff < 50)
         {
             BuffsManager.Instance.AddBuff(goodType);

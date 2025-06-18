@@ -8,7 +8,8 @@ public enum BuffType
     ViralBuff,
     NegativeReactionBuff,
     FansUnited,
-    FansConflitct
+    FansConflitct,
+    CleanStreets
 }
 
 public class BuffsManager : MonoBehaviour
@@ -22,6 +23,7 @@ public class BuffsManager : MonoBehaviour
     [SerializeField] private Sprite _negativeReactionIcon;
     [SerializeField] private Sprite _fansUnitedIcon;
     [SerializeField] private Sprite _fansConflictIcon;
+    [SerializeField] private Sprite _cleanStreetsIcon;
 
     private void Awake()
     {
@@ -55,6 +57,8 @@ public class BuffsManager : MonoBehaviour
                 return "+10% to loyalty";
             case BuffType.FansConflitct:
                 return "-10% to reputation";
+            case BuffType.CleanStreets:
+                return "+15% to reputation";
             default:
                 return "";
         }
@@ -91,6 +95,9 @@ public class BuffsManager : MonoBehaviour
                 UIManager.Instance.ShowPopup(Popups.BuffUnited);
                 break;
             case BuffType.FansConflitct:
+                UIManager.Instance.ShowPopup(Popups.BuffConflict);
+                break;
+            case BuffType.CleanStreets:
                 UIManager.Instance.ShowPopup(Popups.BuffConflict);
                 break;
         }

@@ -31,7 +31,8 @@ public enum Popups
    BuffViral,
    BuffNegativeReaction,
    BuffUnited,
-   BuffConflict
+   BuffConflict,
+   BuffCleanSteets
 }
 
 public class UIManager : MonoBehaviour
