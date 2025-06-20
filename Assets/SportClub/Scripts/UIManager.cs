@@ -40,7 +40,11 @@ public enum Popups
    FansPushBack,
    CoolerHeads,
    SeenAsWeek,
-   MerchPopupSure
+   MerchPopupSure,
+   Sold,
+   Cold,
+   Payday,
+   Vandalized
 }
 
 public class UIManager : MonoBehaviour

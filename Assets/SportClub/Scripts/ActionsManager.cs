@@ -78,9 +78,13 @@ public class ActionsManager : MonoBehaviour
                 case ActionType.Calm:
                     ActivateActionBuff(BuffType.CoolerHeads, BuffType.SeenAsWeek);
                     break;
+                case ActionType.Merch:
+                    ActivateActionBuff(BuffType.Sold, BuffType.Cold);
+                    break;
+                case ActionType.Popup:
+                    ActivateActionBuff(BuffType.Payday, BuffType.Vandalized);
+                    break;
             }
-            
-            //додати бафи для management 
         }));
     }
 

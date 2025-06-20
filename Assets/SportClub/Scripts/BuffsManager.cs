@@ -18,7 +18,12 @@ public enum BuffType
     OrderRestored,
     FansPushBack,
     CoolerHeads,
-    SeenAsWeek
+    SeenAsWeek,
+    //Mech
+    Sold,
+    Cold,
+    Payday,
+    Vandalized
 }
 
 public class BuffsManager : MonoBehaviour
@@ -99,27 +104,18 @@ public class BuffsManager : MonoBehaviour
             case BuffType.CoolerHeads:
                 return More("loyalty", out icon, loyaltyIcon);
             case BuffType.SeenAsWeek:
+                return Less("income", out icon, loyaltyIcon);
+            case BuffType.Sold:
                 return More("income", out icon, loyaltyIcon);
+            case BuffType.Cold:
+                return Less("income", out icon, loyaltyIcon);
+            case BuffType.Payday:
+                return More("reputation", out icon, loyaltyIcon);
+            case BuffType.Vandalized:
+                return Less("reputation", out icon, loyaltyIcon);
             default:
                 icon = null;
                 return "";
-        }
-    }
-
-    private Sprite GetIconByType(BuffType buffType)
-    {
-        switch (buffType)
-        {
-            case BuffType.ViralBuff:
-                return _viralIcon;
-            case BuffType.NegativeReactionBuff:
-                return _negativeReactionIcon;
-            case BuffType.FansUnited:
-                return _fansUnitedIcon;
-            case BuffType.FansConflitct:
-                return _fansConflictIcon;
-            default:
-                return null;
         }
     }
 
@@ -159,6 +155,18 @@ public class BuffsManager : MonoBehaviour
                 break;
             case BuffType.SeenAsWeek:
                 UIManager.Instance.ShowPopup(Popups.SeenAsWeek);
+                break;
+            case BuffType.Sold:
+                UIManager.Instance.ShowPopup(Popups.Sold);
+                break;
+            case BuffType.Cold:
+                UIManager.Instance.ShowPopup(Popups.Cold);
+                break;
+            case BuffType.Payday:
+                UIManager.Instance.ShowPopup(Popups.Payday);
+                break;
+            case BuffType.Vandalized:
+                UIManager.Instance.ShowPopup(Popups.Vandalized);
                 break;
         }
     }
