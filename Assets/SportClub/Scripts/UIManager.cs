@@ -39,7 +39,8 @@ public enum Popups
    OrderRestored,
    FansPushBack,
    CoolerHeads,
-   SeenAsWeek
+   SeenAsWeek,
+   MerchPopupSure
 }
 
 public class UIManager : MonoBehaviour

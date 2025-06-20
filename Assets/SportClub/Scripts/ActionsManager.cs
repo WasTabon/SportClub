@@ -8,7 +8,9 @@ public enum ActionType
     Clear,
     Appoint,
     Restructure,
-    Calm
+    Calm,
+    Merch,
+    Popup
 }
 
 public class ActionsManager : MonoBehaviour
@@ -39,6 +41,14 @@ public class ActionsManager : MonoBehaviour
     public void SetActionTypeCalm()
     {
         SetActionHandler(ActionType.Calm, Popups.ManagementPopupSure);
+    }
+    public void SetActionTypeMerch()
+    {
+        SetActionHandler(ActionType.Merch, Popups.MerchPopupSure);
+    }
+    public void SetActionTypePopup()
+    {
+        SetActionHandler(ActionType.Popup, Popups.MerchPopupSure);
     }
 
     public void HandleActionType()
