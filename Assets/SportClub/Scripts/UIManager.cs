@@ -44,7 +44,8 @@ public enum Popups
    Sold,
    Cold,
    Payday,
-   Vandalized
+   Vandalized,
+   SabotagePopupSure
 }
 
 public class UIManager : MonoBehaviour

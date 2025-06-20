@@ -10,7 +10,10 @@ public enum ActionType
     Restructure,
     Calm,
     Merch,
-    Popup
+    Popup,
+    Leak,
+    Fake,
+    Steal
 }
 
 public class ActionsManager : MonoBehaviour
@@ -49,6 +52,18 @@ public class ActionsManager : MonoBehaviour
     public void SetActionTypePopup()
     {
         SetActionHandler(ActionType.Popup, Popups.MerchPopupSure);
+    }
+    public void SetActionTypeLeak()
+    {
+        SetActionHandler(ActionType.Leak, Popups.SabotagePopupSure);
+    }
+    public void SetActionTypeFake()
+    {
+        SetActionHandler(ActionType.Fake, Popups.SabotagePopupSure);
+    }
+    public void SetActionTypeSteal()
+    {
+        SetActionHandler(ActionType.Steal, Popups.SabotagePopupSure);
     }
 
     public void HandleActionType()
