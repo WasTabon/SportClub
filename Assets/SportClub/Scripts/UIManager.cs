@@ -45,7 +45,13 @@ public enum Popups
    Cold,
    Payday,
    Vandalized,
-   SabotagePopupSure
+   SabotagePopupSure,
+   Scandal,
+   Caught,
+   Ratings,
+   Investigation,
+   Fans,
+   Backlash
 }
 
 public class UIManager : MonoBehaviour

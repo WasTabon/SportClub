@@ -23,7 +23,14 @@ public enum BuffType
     Sold,
     Cold,
     Payday,
-    Vandalized
+    Vandalized,
+    //Sabotage
+    Scandal,
+    Caught,
+    Ratings,
+    Investigation,
+    Fans,
+    Backlash
 }
 
 public class BuffsManager : MonoBehaviour
@@ -88,7 +95,7 @@ public class BuffsManager : MonoBehaviour
             case BuffType.NegativeReactionBuff:
                 return Less("loyalty", out icon, loyaltyIcon);
             case BuffType.FansUnited:
-                return More("loyalty", out icon, loyaltyIcon);
+                return More("fans", out icon, loyaltyIcon);
             case BuffType.FansConflitct:
                 return Less("hype", out icon, reputationIcon);
             case BuffType.CleanStreets:
@@ -110,9 +117,21 @@ public class BuffsManager : MonoBehaviour
             case BuffType.Cold:
                 return Less("income", out icon, loyaltyIcon);
             case BuffType.Payday:
-                return More("reputation", out icon, loyaltyIcon);
+                return More("hype", out icon, loyaltyIcon);
             case BuffType.Vandalized:
                 return Less("reputation", out icon, loyaltyIcon);
+            case BuffType.Scandal:
+                return More("loyalty", out icon, loyaltyIcon);
+            case BuffType.Caught:
+                return Less("reputation", out icon, loyaltyIcon);
+            case BuffType.Ratings:
+                return More("fans", out icon, loyaltyIcon);
+            case BuffType.Investigation:
+                return Less("income", out icon, loyaltyIcon);
+            case BuffType.Fans:
+                return More("reputation", out icon, loyaltyIcon);
+            case BuffType.Backlash:
+                return Less("hype", out icon, loyaltyIcon);
             default:
                 icon = null;
                 return "";
