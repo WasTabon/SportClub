@@ -456,6 +456,18 @@ MonoBehaviour:
     Panel: {fileID: 1832407609}
   - Type: 7
     Panel: {fileID: 1293539291}
+  - Type: 8
+    Panel: {fileID: 1705639577}
+  - Type: 9
+    Panel: {fileID: 754062933}
+  - Type: 10
+    Panel: {fileID: 1202704894}
+  - Type: 11
+    Panel: {fileID: 1278615162}
+  - Type: 12
+    Panel: {fileID: 1118660303}
+  - Type: 13
+    Panel: {fileID: 401430028}
 --- !u!1 &111717908
 GameObject:
   m_ObjectHideFlags: 0
@@ -13095,7 +13107,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1293539291
 RectTransform:
   m_ObjectHideFlags: 0
@@ -18129,7 +18141,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1712300336
 RectTransform:
   m_ObjectHideFlags: 0
@@ -23102,7 +23114,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &2101746626722951903
 GameObject:
   m_ObjectHideFlags: 0
