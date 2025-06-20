@@ -59,6 +59,15 @@ public class ActionsManager : MonoBehaviour
                 case ActionType.Clear:
                     ActivateActionBuff(BuffType.CleanStreets, BuffType.CleanStreets);
                     break;
+                case ActionType.Appoint:
+                    ActivateActionBuff(BuffType.NewVoice, BuffType.Radical);
+                    break;
+                case ActionType.Restructure:
+                    ActivateActionBuff(BuffType.OrderRestored, BuffType.FansPushBack);
+                    break;
+                case ActionType.Calm:
+                    ActivateActionBuff(BuffType.CoolerHeads, BuffType.SeenAsWeek);
+                    break;
             }
             
             //додати бафи для management 

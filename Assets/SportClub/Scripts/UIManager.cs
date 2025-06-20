@@ -33,7 +33,13 @@ public enum Popups
    BuffUnited,
    BuffConflict,
    BuffCleanSteets,
-   ManagementPopupSure
+   ManagementPopupSure,
+   NewVoice,
+   Radical,
+   OrderRestored,
+   FansPushBack,
+   CoolerHeads,
+   SeenAsWeek
 }
 
 public class UIManager : MonoBehaviour

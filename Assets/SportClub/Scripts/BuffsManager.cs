@@ -2,6 +2,7 @@ using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 public enum BuffType
 {
@@ -32,6 +33,11 @@ public class BuffsManager : MonoBehaviour
     [SerializeField] private Sprite _fansUnitedIcon;
     [SerializeField] private Sprite _fansConflictIcon;
     [SerializeField] private Sprite _cleanStreetsIcon;
+    
+    [SerializeField] private Sprite incomeIcon;
+    [SerializeField] private Sprite reputationIcon;
+    [SerializeField] private Sprite loyaltyIcon;
+    [SerializeField] private Sprite hypeIcon;
 
     private void Awake()
     {
@@ -40,8 +46,7 @@ public class BuffsManager : MonoBehaviour
 
     public void AddBuff(BuffType buffType)
     {
-        string description = GetDescriptionByType(buffType);
-        Sprite sprite = GetIconByType(buffType);
+        string description = GetDescriptionByType(buffType, out Sprite sprite);
         
         RectTransform buff = Instantiate(_buff.gameObject, _content).GetComponent<RectTransform>();
         Image icon = buff.GetComponentInChildren<Image>();
@@ -53,33 +58,50 @@ public class BuffsManager : MonoBehaviour
         GetPopupByType(buffType);
     }
 
-    private string GetDescriptionByType(BuffType buffType)
+    private int GeneratePercent() => Random.Range(5, 31);
+
+    private string More(string statName, out Sprite icon, Sprite statIcon)
+    {
+        int percent = GeneratePercent();
+        icon = statIcon;
+        return $"+{percent}% to {statName}";
+    }
+
+    private string Less(string statName, out Sprite icon, Sprite statIcon)
+    {
+        int percent = GeneratePercent();
+        icon = statIcon;
+        return $"-{percent}% to {statName}";
+    }
+
+    private string GetDescriptionByType(BuffType buffType, out Sprite icon)
     {
         switch (buffType)
         {
             case BuffType.ViralBuff:
-                return "+20% to income";
+                return More("income", out icon, incomeIcon);
             case BuffType.NegativeReactionBuff:
-                return "-10% to loyalty";
+                return Less("loyalty", out icon, loyaltyIcon);
             case BuffType.FansUnited:
-                return "+10% to loyalty";
+                return More("loyalty", out icon, loyaltyIcon);
             case BuffType.FansConflitct:
-                return "-10% to reputation";
+                return Less("hype", out icon, reputationIcon);
             case BuffType.CleanStreets:
-                return "+15% to reputation";
+                return More("reputation", out icon, reputationIcon);
             case BuffType.NewVoice:
-                return "+30% to reputation";
+                return More("income", out icon, reputationIcon);
             case BuffType.Radical:
-                return "-30% to reputation";
+                return Less("reputation", out icon, reputationIcon);
             case BuffType.OrderRestored:
-                return "+10% to loyalty";
+                return More("loyalty", out icon, loyaltyIcon);
             case BuffType.FansPushBack:
-                return "-15% to loyalty";
+                return Less("hype", out icon, loyaltyIcon);
             case BuffType.CoolerHeads:
-                return "+10% to loyalty";
+                return More("loyalty", out icon, loyaltyIcon);
             case BuffType.SeenAsWeek:
-                return "+10% to loyalty";
+                return More("income", out icon, loyaltyIcon);
             default:
+                icon = null;
                 return "";
         }
     }
@@ -119,6 +141,24 @@ public class BuffsManager : MonoBehaviour
                 break;
             case BuffType.CleanStreets:
                 UIManager.Instance.ShowPopup(Popups.BuffCleanSteets);
+                break;
+            case BuffType.NewVoice:
+                UIManager.Instance.ShowPopup(Popups.NewVoice);
+                break;
+            case BuffType.Radical:
+                UIManager.Instance.ShowPopup(Popups.Radical);
+                break;
+            case BuffType.OrderRestored:
+                UIManager.Instance.ShowPopup(Popups.OrderRestored);
+                break;
+            case BuffType.FansPushBack:
+                UIManager.Instance.ShowPopup(Popups.FansPushBack);
+                break;
+            case BuffType.CoolerHeads:
+                UIManager.Instance.ShowPopup(Popups.CoolerHeads);
+                break;
+            case BuffType.SeenAsWeek:
+                UIManager.Instance.ShowPopup(Popups.SeenAsWeek);
                 break;
         }
     }
