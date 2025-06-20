@@ -99,6 +99,15 @@ public class ActionsManager : MonoBehaviour
                 case ActionType.Popup:
                     ActivateActionBuff(BuffType.Payday, BuffType.Vandalized);
                     break;
+                case ActionType.Leak:
+                    ActivateActionBuff(BuffType.Scandal, BuffType.Caught);
+                    break;
+                case ActionType.Fake:
+                    ActivateActionBuff(BuffType.Ratings, BuffType.Investigation);
+                    break;
+                case ActionType.Steal:
+                    ActivateActionBuff(BuffType.Fans, BuffType.Backlash);
+                    break;
             }
         }));
     }
