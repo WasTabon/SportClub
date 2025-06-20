@@ -770,6 +770,18 @@ MonoBehaviour:
     Panel: {fileID: 1482583219}
   - Type: 19
     Panel: {fileID: 611774273}
+  - Type: 20
+    Panel: {fileID: 1722699142}
+  - Type: 21
+    Panel: {fileID: 1986270923}
+  - Type: 22
+    Panel: {fileID: 1524921287}
+  - Type: 23
+    Panel: {fileID: 1722116887}
+  - Type: 24
+    Panel: {fileID: 1979674171}
+  - Type: 25
+    Panel: {fileID: 2009030390}
 --- !u!1 &111717908
 GameObject:
   m_ObjectHideFlags: 0
@@ -23372,7 +23384,7 @@ GameObject:
   - component: {fileID: 1524921289}
   - component: {fileID: 1524921288}
   m_Layer: 5
-  m_Name: PopupRatings Tanked
+  m_Name: PopupRatingsTanked
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -31366,7 +31378,7 @@ GameObject:
   - component: {fileID: 1979674173}
   - component: {fileID: 1979674172}
   m_Layer: 5
-  m_Name: 'PopupStealRivalChant '
+  m_Name: PopupFansLoveRemix
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
