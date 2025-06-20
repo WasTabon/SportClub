@@ -60,6 +60,8 @@ public class ActionsManager : MonoBehaviour
                     ActivateActionBuff(BuffType.CleanStreets, BuffType.CleanStreets);
                     break;
             }
+            
+            //додати бафи для management 
         }));
     }
 

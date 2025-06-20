@@ -5,11 +5,19 @@ using UnityEngine.UI;
 
 public enum BuffType
 {
+    //PR
     ViralBuff,
     NegativeReactionBuff,
     FansUnited,
     FansConflitct,
-    CleanStreets
+    CleanStreets,
+    //Management
+    NewVoice,
+    Radical,
+    OrderRestored,
+    FansPushBack,
+    CoolerHeads,
+    SeenAsWeek
 }
 
 public class BuffsManager : MonoBehaviour
@@ -59,6 +67,18 @@ public class BuffsManager : MonoBehaviour
                 return "-10% to reputation";
             case BuffType.CleanStreets:
                 return "+15% to reputation";
+            case BuffType.NewVoice:
+                return "+30% to reputation";
+            case BuffType.Radical:
+                return "-30% to reputation";
+            case BuffType.OrderRestored:
+                return "+10% to loyalty";
+            case BuffType.FansPushBack:
+                return "-15% to loyalty";
+            case BuffType.CoolerHeads:
+                return "+10% to loyalty";
+            case BuffType.SeenAsWeek:
+                return "+10% to loyalty";
             default:
                 return "";
         }
