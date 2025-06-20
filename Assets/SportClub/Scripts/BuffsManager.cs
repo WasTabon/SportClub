@@ -187,6 +187,24 @@ public class BuffsManager : MonoBehaviour
             case BuffType.Vandalized:
                 UIManager.Instance.ShowPopup(Popups.Vandalized);
                 break;
+            case BuffType.Scandal:
+                UIManager.Instance.ShowPopup(Popups.Scandal);
+                break;
+            case BuffType.Caught:
+                UIManager.Instance.ShowPopup(Popups.Caught);
+                break;
+            case BuffType.Ratings:
+                UIManager.Instance.ShowPopup(Popups.Ratings);
+                break;
+            case BuffType.Investigation:
+                UIManager.Instance.ShowPopup(Popups.Investigation);
+                break;
+            case BuffType.Fans:
+                UIManager.Instance.ShowPopup(Popups.Fans);
+                break;
+            case BuffType.Backlash:
+                UIManager.Instance.ShowPopup(Popups.Backlash);
+                break;
         }
     }
 }
