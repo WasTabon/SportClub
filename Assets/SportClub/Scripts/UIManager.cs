@@ -51,7 +51,8 @@ public enum Popups
    Ratings,
    Investigation,
    Fans,
-   Backlash
+   Backlash,
+   NotEnoughResources
 }
 
 public class UIManager : MonoBehaviour

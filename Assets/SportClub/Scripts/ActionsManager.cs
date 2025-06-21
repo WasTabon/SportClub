@@ -16,58 +16,111 @@ public enum ActionType
     Steal
 }
 
+public enum CostType
+{
+    PR,
+    Management,
+    Merch,
+    Sabotage
+}
+
 public class ActionsManager : MonoBehaviour
 {
     private ActionType _actionType;
+    private CostType _costType;
 
     public void SetActionTypeLaunch()
     {
         SetActionHandler(ActionType.Launch, Popups.PRPopupSure);
+        _costType = CostType.PR;
     }
     public void SetActionTypeOrganize()
     {
         SetActionHandler(ActionType.Organize, Popups.PRPopupSure);
+        _costType = CostType.PR;
     }
     public void SetActionTypeClear()
     {
         SetActionHandler(ActionType.Clear, Popups.PRPopupSure);
+        _costType = CostType.PR;
     }
 
     public void SetActionTypeAppoint()
     {
         SetActionHandler(ActionType.Appoint, Popups.ManagementPopupSure);
+        _costType = CostType.Management;
     }
     public void SetActionTypeRestructure()
     {
         SetActionHandler(ActionType.Restructure, Popups.ManagementPopupSure);
+        _costType = CostType.Management;
     }
     public void SetActionTypeCalm()
     {
         SetActionHandler(ActionType.Calm, Popups.ManagementPopupSure);
+        _costType = CostType.Management;
     }
     public void SetActionTypeMerch()
     {
         SetActionHandler(ActionType.Merch, Popups.MerchPopupSure);
+        _costType = CostType.Merch;
     }
     public void SetActionTypePopup()
     {
         SetActionHandler(ActionType.Popup, Popups.MerchPopupSure);
+        _costType = CostType.Merch;
     }
     public void SetActionTypeLeak()
     {
         SetActionHandler(ActionType.Leak, Popups.SabotagePopupSure);
+        _costType = CostType.Sabotage;
     }
     public void SetActionTypeFake()
     {
         SetActionHandler(ActionType.Fake, Popups.SabotagePopupSure);
+        _costType = CostType.Sabotage;
     }
     public void SetActionTypeSteal()
     {
         SetActionHandler(ActionType.Steal, Popups.SabotagePopupSure);
+        _costType = CostType.Sabotage;
     }
 
     public void HandleActionType()
     {
+        if (_costType == CostType.PR)
+        {
+            if (ClubManager.Instance.GetMoney() - 50 < 0)
+            {
+                UIManager.Instance.ShowPopup(Popups.NotEnoughResources);
+                return;
+            }
+        }
+        else if (_costType == CostType.Management)
+        {
+            if (ClubManager.Instance.GetHype() - 10 < 0)
+            {
+                UIManager.Instance.ShowPopup(Popups.NotEnoughResources);
+                return;
+            }
+        }
+        else if (_costType == CostType.Merch)
+        {
+            if (ClubManager.Instance.GetMoney() - 100 < 0)
+            {
+                UIManager.Instance.ShowPopup(Popups.NotEnoughResources);
+                return;
+            }
+        }
+        else if (_costType == CostType.Sabotage)
+        {
+            if (ClubManager.Instance.GetFans() - 5 < 0)
+            {
+                UIManager.Instance.ShowPopup(Popups.NotEnoughResources);
+                return;
+            }
+        }
+        
         UIManager.Instance._loadingScreen.DOScale(Vector3.one, 0.15f);
         DOVirtual.DelayedCall(5f, (() =>
         {
