@@ -105,6 +105,16 @@ public class UIManager : MonoBehaviour
       
       _loadingScreen.DOScale(Vector3.zero, 0f);
    }
+   private void Update()
+   {
+      foreach (var popup in _popups.Values)
+      {
+         if (!popup.gameObject.activeSelf && popup.localScale != Vector3.zero)
+         {
+            popup.localScale = Vector3.zero;
+         }
+      }
+   }
 
    public void ClosePanel(RectTransform panel)
    {
