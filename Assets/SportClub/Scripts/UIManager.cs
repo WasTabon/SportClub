@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
@@ -91,6 +92,10 @@ public class UIManager : MonoBehaviour
    private Dictionary<Warnings, TextMeshProUGUI> _warnings;
    private Dictionary<Popups, RectTransform> _popups;
 
+   private int _prevHype = -1;
+   private int _prevReputation = -1;
+   private int _prevMoney = -1;
+   
    private void Awake()
    {
       Instance = this;
@@ -127,15 +132,33 @@ public class UIManager : MonoBehaviour
          }
       }
 
-      _hypeText.text = $"{ClubManager.Instance.GetHype()}/100";
-      _reputationText.text = $"{ClubManager.Instance.GetReputation()}/100";
+      int hype = ClubManager.Instance.GetHype();
+      if (hype != _prevHype)
+      {
+         AnimateNumberPlain(_hypeText, hype, "/100");
+         _prevHype = hype;
+      }
+
+      int reputation = ClubManager.Instance.GetReputation();
+      if (reputation != _prevReputation)
+      {
+         AnimateNumberPlain(_reputationText, reputation, "/100");
+         _prevReputation = reputation;
+      }
+
+      int money = ClubManager.Instance.GetMoney();
+      if (money != _prevMoney)
+      {
+         AnimateNumberPlain(_moneyText, money, "$");
+         _prevMoney = money;
+      }
+
       _levelText.text = $"{ClubManager.Instance.GetLevel()} Level";
       _fansText.text = $"{ClubManager.Instance.GetFans()} Fans";
       _loyalityText.text = $"{ClubManager.Instance.GetLoyality()}/100 Loyalty";
-      _moneyText.text = $"{ClubManager.Instance.GetMoney()}$";
-      
-      _hypeFillImage.DOFillAmount(ClubManager.Instance.GetHype() / 100f, 0.3f);
-      _reputationFillImage.DOFillAmount(ClubManager.Instance.GetReputation() / 100f, 0.3f);
+
+      _hypeFillImage.DOFillAmount(hype / 100f, 0.3f);
+      _reputationFillImage.DOFillAmount(reputation / 100f, 0.3f);
    }
 
    public void ClosePanel(RectTransform panel)
@@ -166,7 +189,12 @@ public class UIManager : MonoBehaviour
 
    public void AnimateNumberPlain(TextMeshProUGUI text, int targetValue, string label, float duration = 1f)
    {
+      // Пытаемся получить текущее число из текста
       int currentValue = 0;
+
+      // Извлекаем только число из строки (например, "45 Fans" → 45)
+      string numericPart = new string(text.text.TakeWhile(c => char.IsDigit(c) || c == '-').ToArray());
+      int.TryParse(numericPart, out currentValue);
 
       DOTween.To(() => currentValue, x =>
       {
