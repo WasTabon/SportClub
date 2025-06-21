@@ -7,6 +7,8 @@ using UnityEngine;
 public class ClubManager : MonoBehaviour
 {
     public static ClubManager Instance;
+
+    [SerializeField] private GameObject _setNamePanel;
     
     [SerializeField] private string _playerName;
     [SerializeField] private int _money;
@@ -16,6 +18,7 @@ public class ClubManager : MonoBehaviour
     [SerializeField] private int _loyality;
     [SerializeField] private int _level;
 
+    private const string PlayerNameKey = "PlayerName";
     private const string MoneyKey = "Money";
     private const string HypeKey = "Hype";
     private const string ReputationKey = "Reputation";
@@ -76,6 +79,18 @@ public class ClubManager : MonoBehaviour
         _fans = PlayerPrefs.GetInt(FansKey, 10);
         _loyality = PlayerPrefs.GetInt(LoyalityKey, 10);
         _level = PlayerPrefs.GetInt(LevelKey, 1);
+        
+        _playerName = PlayerPrefs.GetString(PlayerNameKey, "");
+
+        if (string.IsNullOrWhiteSpace(_playerName))
+        {
+            _setNamePanel.SetActive(true);
+        }
+        else
+        {
+            _setNamePanel.SetActive(false);
+            UIManager.Instance.SetNameOnPanel(_playerName);
+        }
     }
 
     public void SetName(TMP_InputField inputField)
@@ -93,6 +108,9 @@ public class ClubManager : MonoBehaviour
         else
         {
             _playerName = input;
+            
+            PlayerPrefs.SetString(PlayerNameKey, _playerName);
+            PlayerPrefs.Save();
             
             UIManager.Instance.SetNameOnPanel(_playerName);
             
