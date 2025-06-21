@@ -63,6 +63,14 @@ public class UIManager : MonoBehaviour
 
    public RectTransform _loadingScreen;
 
+   [SerializeField] private RectTransform _finishDayPanel;
+   [SerializeField] private TextMeshProUGUI _moneyCount;
+   [SerializeField] private TextMeshProUGUI _reputationCount;
+   [SerializeField] private TextMeshProUGUI _hypeCount;
+   [SerializeField] private TextMeshProUGUI _fansCount;
+   [SerializeField] private TextMeshProUGUI _loyaltyCount;
+   
+   [Header("Text")]
    [SerializeField] private TextMeshProUGUI _hypeText;
    [SerializeField] private TextMeshProUGUI _reputationText;
    [SerializeField] private TextMeshProUGUI _moneyText;
@@ -165,6 +173,11 @@ public class UIManager : MonoBehaviour
    {
       panel.DOScale(Vector3.zero, _timeClosePanel);
    }
+   
+   public void ClosePanelFinishDay(RectTransform panel)
+   {
+      panel.DOScale(Vector3.zero, _timeClosePanel);
+   }
 
    public void OpenPanel(RectTransform panel)
    {
@@ -189,10 +202,8 @@ public class UIManager : MonoBehaviour
 
    public void AnimateNumberPlain(TextMeshProUGUI text, int targetValue, string label, float duration = 1f)
    {
-      // Пытаемся получить текущее число из текста
       int currentValue = 0;
-
-      // Извлекаем только число из строки (например, "45 Fans" → 45)
+      
       string numericPart = new string(text.text.TakeWhile(c => char.IsDigit(c) || c == '-').ToArray());
       int.TryParse(numericPart, out currentValue);
 
