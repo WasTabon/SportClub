@@ -113,7 +113,7 @@ public class TabsHandler : MonoBehaviour
             sequence.AppendInterval(stepDuration + postRebuildDelay);
             sequence.OnComplete((() =>
             {
-                Debug.Log("Animation Finished");
+                UIManager.Instance.ShowPanelFinishDay();
             }));
         }
     }

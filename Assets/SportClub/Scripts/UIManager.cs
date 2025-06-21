@@ -64,6 +64,7 @@ public class UIManager : MonoBehaviour
    public RectTransform _loadingScreen;
 
    [SerializeField] private RectTransform _finishDayPanel;
+   [SerializeField] private RectTransform _finishDayButton;
    [SerializeField] private TextMeshProUGUI _moneyCount;
    [SerializeField] private TextMeshProUGUI _reputationCount;
    [SerializeField] private TextMeshProUGUI _hypeCount;
@@ -129,6 +130,7 @@ public class UIManager : MonoBehaviour
       ResetAllPopups();
       
       _loadingScreen.DOScale(Vector3.zero, 0f);
+      _finishDayPanel.DOScale(Vector3.zero, 0f);
    }
    private void Update()
    {
@@ -186,7 +188,49 @@ public class UIManager : MonoBehaviour
 
    public void ShowPanelFinishDay()
    {
-      
+      _finishDayPanel.DOScale(Vector3.one, 0.15f);
+
+      List<(TextMeshProUGUI text, Func<int> getter, Action<int> setter, string label, int min, int max)> stats = new()
+      {
+         (_moneyCount, ClubManager.Instance.GetMoney, ClubManager.Instance.SetMoney, "$", 50, 200),
+         (_reputationCount, ClubManager.Instance.GetReputation, ClubManager.Instance.SetReputation, "Reputation", 5, 10),
+         (_hypeCount, ClubManager.Instance.GetHype, ClubManager.Instance.SetHype, "Hype", 5, 10),
+         (_fansCount, ClubManager.Instance.GetFans, ClubManager.Instance.SetFans, "Fans", 5, 10),
+         (_loyaltyCount, ClubManager.Instance.GetLoyality, ClubManager.Instance.SetLoyality, "Loyalty", 5, 10),
+      };
+
+      // Сначала уменьшаем всё
+      foreach (var entry in stats)
+         entry.text.transform.localScale = Vector3.zero;
+
+      _finishDayButton.localScale = Vector3.zero;
+
+      Sequence seq = DOTween.Sequence();
+      float appearTime = 0.3f;
+      float countTime = 0.8f;
+
+      for (int i = 0; i < stats.Count; i++)
+      {
+         var (text, getter, setter, label, min, max) = stats[i];
+
+         int bonus = UnityEngine.Random.Range(min, max + 1);
+         int oldValue = getter();
+         int newValue = oldValue + bonus;
+
+         seq.Append(text.transform.DOScale(Vector3.one, appearTime).SetEase(Ease.OutBack));
+         seq.AppendCallback(() =>
+         {
+            AnimateNumberWithPlus(text, bonus, label, countTime);
+         });
+         seq.AppendInterval(countTime);
+         seq.AppendCallback(() =>
+         {
+            setter(newValue);
+         });
+      }
+
+      // Показать кнопку после всех
+      seq.Append(_finishDayButton.DOScale(Vector3.one, 0.4f).SetEase(Ease.OutBack));
    }
    
    public void AnimateNumberWithPlus(TextMeshProUGUI text, int targetValue, string label, float duration = 1f)
