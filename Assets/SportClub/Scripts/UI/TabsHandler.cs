@@ -15,6 +15,8 @@ public class TabEntry
 
 public class TabsHandler : MonoBehaviour
 {
+    public static TabsHandler Instance;
+    
     [SerializeField] private Scrollbar _verticalScrollbar;
     [SerializeField] private ScrollRect _scrollRect;
     [SerializeField] private RectTransform _scrollContentToClear;
@@ -28,6 +30,11 @@ public class TabsHandler : MonoBehaviour
 
     private int _currentTabIndex = 0;
     private bool _indicatorSized = false;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     private void Start()
     {
@@ -64,7 +71,14 @@ public class TabsHandler : MonoBehaviour
         var children = new List<Transform>();
         foreach (Transform child in _scrollContentToClear)
             children.Add(child);
-
+        
+        if (children.Count == 0)
+        {
+            // Если контент уже пуст — сразу показать окно
+            UIManager.Instance.ShowPanelFinishDay();
+            return;
+        }
+        
         Sequence sequence = DOTween.Sequence();
 
         float stepDuration = 0.8f;

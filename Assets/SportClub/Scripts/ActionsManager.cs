@@ -1,5 +1,7 @@
+using System;
 using DG.Tweening;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public enum ActionType
 {
@@ -191,6 +193,9 @@ public class ActionsManager : MonoBehaviour
     private void ActivateActionBuff(BuffType goodType, BuffType badType)
     {
         int randomBuff = Random.Range(0, 100);
+        
+        TimeSpan timeToAdd = TimeSpan.FromMinutes(Random.Range(60, 121));
+        UIManager.Instance.AnimateTimeAdvance(timeToAdd);
         
         if (randomBuff < 50)
         {

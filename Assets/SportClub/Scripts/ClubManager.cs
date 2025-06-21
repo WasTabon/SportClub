@@ -16,6 +16,13 @@ public class ClubManager : MonoBehaviour
     [SerializeField] private int _loyality;
     [SerializeField] private int _level;
 
+    private const string MoneyKey = "Money";
+    private const string HypeKey = "Hype";
+    private const string ReputationKey = "Reputation";
+    private const string FansKey = "Fans";
+    private const string LoyalityKey = "Loyality";
+    private const string LevelKey = "Level";
+    
     public int GetMoney() => _money;
     public int GetReputation() => _reputation;
     public int GetHype() => _hype;
@@ -23,16 +30,52 @@ public class ClubManager : MonoBehaviour
     public int GetFans() => _fans;
     public int GetLoyality() => _loyality;
     
-    public void SetMoney(int amount) => _money = amount;
-    public void SetReputation(int value) => _reputation = value;
-    public void SetHype(int value) => _hype = value;
-    public void SetLevel(int value) => _level = value;
-    public void SetFans(int value) => _fans = value;
-    public void SetLoyality(int value) => _loyality = value;
+    public void SetMoney(int amount)
+    {
+        _money = amount;
+        PlayerPrefs.SetInt(MoneyKey, _money);
+    }
+
+    public void SetReputation(int value)
+    {
+        _reputation = Mathf.Clamp(value, 0, 100);
+        PlayerPrefs.SetInt(ReputationKey, _reputation);
+    }
+
+    public void SetHype(int value)
+    {
+        _hype = Mathf.Clamp(value, 0, 100);
+        PlayerPrefs.SetInt(HypeKey, _hype);
+    }
+
+    public void SetLevel(int value)
+    {
+        _level = value;
+        PlayerPrefs.SetInt(LevelKey, _level);
+    }
+
+    public void SetFans(int value)
+    {
+        _fans = value;
+        PlayerPrefs.SetInt(FansKey, _fans);
+    }
+
+    public void SetLoyality(int value)
+    {
+        _loyality = Mathf.Clamp(value, 0, 100);
+        PlayerPrefs.SetInt(LoyalityKey, _loyality);
+    }
     
     private void Awake()
     {
         Instance = this;
+
+        _money = PlayerPrefs.GetInt(MoneyKey, 50);
+        _hype = PlayerPrefs.GetInt(HypeKey, 10);
+        _reputation = PlayerPrefs.GetInt(ReputationKey, 10);
+        _fans = PlayerPrefs.GetInt(FansKey, 10);
+        _loyality = PlayerPrefs.GetInt(LoyalityKey, 10);
+        _level = PlayerPrefs.GetInt(LevelKey, 1);
     }
 
     public void SetName(TMP_InputField inputField)

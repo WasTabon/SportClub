@@ -1,9 +1,11 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 [Serializable]
@@ -61,6 +63,8 @@ public class UIManager : MonoBehaviour
 {
    public static UIManager Instance;
 
+   public TextMeshProUGUI timeText;
+   
    public RectTransform _loadingScreen;
 
    [SerializeField] private RectTransform _finishDayPanel;
@@ -100,7 +104,12 @@ public class UIManager : MonoBehaviour
 
    private Dictionary<Warnings, TextMeshProUGUI> _warnings;
    private Dictionary<Popups, RectTransform> _popups;
+   
+   private Coroutine _blinkingColonCoroutine;
+   private bool _showColon = true;
 
+   private TimeSpan _currentTime = new TimeSpan(10, 0, 0);
+   
    private int _prevHype = -1;
    private int _prevReputation = -1;
    private int _prevMoney = -1;
@@ -131,6 +140,8 @@ public class UIManager : MonoBehaviour
       
       _loadingScreen.DOScale(Vector3.zero, 0f);
       _finishDayPanel.DOScale(Vector3.zero, 0f);
+      
+      _blinkingColonCoroutine = StartCoroutine(BlinkingColon());
    }
    private void Update()
    {
@@ -178,9 +189,98 @@ public class UIManager : MonoBehaviour
    
    public void ClosePanelFinishDay(RectTransform panel)
    {
-      panel.DOScale(Vector3.zero, _timeClosePanel);
+      ResetTimeToMorning();
+      
+      // Очистка текстов
+      _moneyCount.text = "";
+      _reputationCount.text = "";
+      _hypeCount.text = "";
+      _fansCount.text = "";
+      _loyaltyCount.text = "";
+
+      // Сброс кнопки
+      CanvasGroup buttonGroup = _finishDayButton.GetComponent<CanvasGroup>();
+      if (buttonGroup != null)
+      {
+         buttonGroup.DOFade(0f, 0.2f);
+      }
+
+      // Анимация закрытия панели: scale + вращение
+      Sequence closeSeq = DOTween.Sequence();
+      closeSeq.Append(panel.DORotate(new Vector3(0, 0, -10f), 0.2f));
+      closeSeq.Join(panel.DOScale(Vector3.zero, 0.25f).SetEase(Ease.InBack));
+      closeSeq.OnComplete(() =>
+      {
+         panel.rotation = Quaternion.identity;
+      });
    }
 
+   private IEnumerator BlinkingColon()
+   {
+      while (true)
+      {
+         _showColon = !_showColon;
+
+         string separator = _showColon ? ":" : " ";
+         SetTimeText(_currentTime);
+
+         yield return new WaitForSeconds(0.5f);
+      }
+   }
+   
+   public void AnimateTimeAdvance(TimeSpan advance)
+   {
+      TimeSpan startTime = _currentTime;
+      TimeSpan endTime = _currentTime + advance;
+
+      if (endTime.Hours >= 23)
+      {
+         endTime = new TimeSpan(23, 0, 0);
+      }
+
+      DOTween.To(() => 0f, t =>
+      {
+         TimeSpan current = TimeSpan.FromMinutes(Mathf.Lerp((float)startTime.TotalMinutes, (float)endTime.TotalMinutes, t));
+         SetTimeText(current);
+      }, 1f, 1.2f).SetEase(Ease.Linear).OnComplete(() =>
+      {
+         _currentTime = endTime;
+         if (_currentTime.Hours >= 23)
+         {
+            TabsHandler.Instance.FinishDay();
+         }
+      });
+   }
+   
+   public void ResetTimeToMorning()
+   {
+      TimeSpan start = _currentTime;
+      TimeSpan target = new TimeSpan(10, 0, 0);
+
+      float startMinutes = (float)start.TotalMinutes;
+      float targetMinutes = (float)target.TotalMinutes;
+
+      if (targetMinutes <= startMinutes)
+         targetMinutes += 1440f;
+
+      DOTween.To(() => 0f, t =>
+      {
+         float currentMins = Mathf.Lerp(startMinutes, targetMinutes, t);
+         TimeSpan current = TimeSpan.FromMinutes(currentMins % 1440);
+         SetTimeText(current);
+      }, 1f, 2f).SetEase(Ease.InOutCubic).OnComplete(() =>
+      {
+         SetTimeText(new TimeSpan(10, 0, 0));
+      });
+   }
+   
+   private void SetTimeText(TimeSpan time)
+   {
+      _currentTime = time;
+      string separator = _showColon ? ":" : " ";
+      _timeText.text = $"{_currentTime.Hours:D2}{separator}{_currentTime.Minutes:D2}";
+   }
+   
    public void OpenPanel(RectTransform panel)
    {
       panel.DOScale(Vector3.one, _timeOpenPanel);
@@ -189,48 +289,61 @@ public class UIManager : MonoBehaviour
    public void ShowPanelFinishDay()
    {
       _finishDayPanel.DOScale(Vector3.one, 0.15f);
+      _finishDayPanel.rotation = Quaternion.Euler(0, 0, 10);
+    _finishDayPanel.DOScale(Vector3.one, 0.3f).SetEase(Ease.OutBack);
+    _finishDayPanel.DORotate(Vector3.zero, 0.3f).SetEase(Ease.OutQuad);
 
-      List<(TextMeshProUGUI text, Func<int> getter, Action<int> setter, string label, int min, int max)> stats = new()
-      {
-         (_moneyCount, ClubManager.Instance.GetMoney, ClubManager.Instance.SetMoney, "$", 50, 200),
-         (_reputationCount, ClubManager.Instance.GetReputation, ClubManager.Instance.SetReputation, "Reputation", 5, 10),
-         (_hypeCount, ClubManager.Instance.GetHype, ClubManager.Instance.SetHype, "Hype", 5, 10),
-         (_fansCount, ClubManager.Instance.GetFans, ClubManager.Instance.SetFans, "Fans", 5, 10),
-         (_loyaltyCount, ClubManager.Instance.GetLoyality, ClubManager.Instance.SetLoyality, "Loyalty", 5, 10),
-      };
+    List<(TextMeshProUGUI text, Func<int> getter, Action<int> setter, string label, int min, int max)> stats = new()
+    {
+        (_moneyCount, ClubManager.Instance.GetMoney, ClubManager.Instance.SetMoney, "$", 50, 200),
+        (_reputationCount, ClubManager.Instance.GetReputation, ClubManager.Instance.SetReputation, "Reputation", 5, 10),
+        (_hypeCount, ClubManager.Instance.GetHype, ClubManager.Instance.SetHype, "Hype", 5, 10),
+        (_fansCount, ClubManager.Instance.GetFans, ClubManager.Instance.SetFans, "Fans", 5, 10),
+        (_loyaltyCount, ClubManager.Instance.GetLoyality, ClubManager.Instance.SetLoyality, "Loyalty", 5, 10),
+    };
 
-      // Сначала уменьшаем всё
-      foreach (var entry in stats)
-         entry.text.transform.localScale = Vector3.zero;
+    foreach (var entry in stats)
+    {
+        entry.text.transform.localScale = Vector3.zero;
+        entry.text.text = "";
+    }
 
-      _finishDayButton.localScale = Vector3.zero;
+    _finishDayButton.localScale = Vector3.zero;
+    CanvasGroup buttonGroup = _finishDayButton.GetComponent<CanvasGroup>();
+    if (buttonGroup == null) buttonGroup = _finishDayButton.gameObject.AddComponent<CanvasGroup>();
+    buttonGroup.alpha = 0;
 
-      Sequence seq = DOTween.Sequence();
-      float appearTime = 0.3f;
-      float countTime = 0.8f;
+    Sequence seq = DOTween.Sequence();
+    float appearTime = 0.3f;
+    float countTime = 0.8f;
 
-      for (int i = 0; i < stats.Count; i++)
-      {
-         var (text, getter, setter, label, min, max) = stats[i];
+    for (int i = 0; i < stats.Count; i++)
+    {
+        var (text, getter, setter, label, min, max) = stats[i];
+        int bonus = UnityEngine.Random.Range(min, max + 1);
+        int oldValue = getter();
+        int newValue = oldValue + bonus;
 
-         int bonus = UnityEngine.Random.Range(min, max + 1);
-         int oldValue = getter();
-         int newValue = oldValue + bonus;
-
-         seq.Append(text.transform.DOScale(Vector3.one, appearTime).SetEase(Ease.OutBack));
-         seq.AppendCallback(() =>
-         {
+        seq.Append(text.transform.DOScale(Vector3.one, appearTime).SetEase(Ease.OutBack));
+        seq.AppendCallback(() =>
+        {
             AnimateNumberWithPlus(text, bonus, label, countTime);
-         });
-         seq.AppendInterval(countTime);
-         seq.AppendCallback(() =>
-         {
+        });
+        seq.AppendInterval(countTime);
+        seq.AppendCallback(() =>
+        {
             setter(newValue);
-         });
-      }
+        });
+    }
 
-      // Показать кнопку после всех
-      seq.Append(_finishDayButton.DOScale(Vector3.one, 0.4f).SetEase(Ease.OutBack));
+    seq.AppendCallback(() =>
+    {
+        // кнопка: одновременно scale, fade и легкий прыжок
+        _finishDayButton.localScale = Vector3.one * 0.7f;
+        buttonGroup.DOFade(1f, 0.3f);
+        _finishDayButton.DOScale(Vector3.one, 0.3f).SetEase(Ease.OutBack);
+        _finishDayButton.DOPunchScale(Vector3.one * 0.15f, 0.4f, 10, 1);
+    });
    }
    
    public void AnimateNumberWithPlus(TextMeshProUGUI text, int targetValue, string label, float duration = 1f)
