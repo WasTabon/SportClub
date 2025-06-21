@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using TMPro;
 using Random = UnityEngine.Random;
 
 [System.Serializable]
@@ -14,6 +15,7 @@ public class TabEntry
 
 public class TabsHandler : MonoBehaviour
 {
+    [SerializeField] private Scrollbar _verticalScrollbar;
     [SerializeField] private ScrollRect _scrollRect;
     [SerializeField] private RectTransform _scrollContentToClear;
     [SerializeField] private Button _mainMenuButton;
@@ -47,6 +49,16 @@ public class TabsHandler : MonoBehaviour
         });
     }
     
+    private Tween AnimateScrollbarSize(float targetSize, float duration = 0.3f)
+    {
+        return DOTween.To(
+            () => _verticalScrollbar.size,
+            value => _verticalScrollbar.size = value,
+            targetSize,
+            duration
+        ).SetEase(Ease.OutQuad);
+    }
+    
     private void ClearContentWithAnimation()
     {
         var children = new List<Transform>();
@@ -55,7 +67,8 @@ public class TabsHandler : MonoBehaviour
 
         Sequence sequence = DOTween.Sequence();
 
-        float stepDuration = 0.5f;
+        float stepDuration = 0.8f;
+        float postRebuildDelay = 0.1f; // пауза после удаления перед началом следующего
 
         for (int i = 0; i < children.Count; i++)
         {
@@ -65,17 +78,14 @@ public class TabsHandler : MonoBehaviour
             CanvasGroup cg = child.GetComponent<CanvasGroup>();
             if (cg == null) cg = child.gameObject.AddComponent<CanvasGroup>();
 
-            // Reset transforms before animation (in case reused)
+            // Reset transforms
             child.localScale = Vector3.one;
             child.localRotation = Quaternion.identity;
             cg.alpha = 1;
 
-            // Create local scope copy for closure
-            int index = i;
-
             sequence.AppendCallback(() =>
             {
-                // Animate current element
+                // Анимация элемента
                 Sequence childSeq = DOTween.Sequence();
 
                 childSeq.Join(cg.DOFade(0, stepDuration));
@@ -85,13 +95,26 @@ public class TabsHandler : MonoBehaviour
 
                 childSeq.OnComplete(() =>
                 {
+                    // Удаляем объект
                     Destroy(child.gameObject);
+
+                    // Принудительно обновляем layout
                     LayoutRebuilder.ForceRebuildLayoutImmediate(_scrollContentToClear);
+                    
+                    float viewportHeight = _scrollRect.viewport.rect.height;
+                    float contentHeight = _scrollContentToClear.rect.height;
+                    float newSize = Mathf.Clamp01(viewportHeight / contentHeight);
+
+                    AnimateScrollbarSize(newSize, 0.5f);
                 });
             });
 
-            // Подождать, прежде чем приступить к следующему
-            sequence.AppendInterval(stepDuration);
+            // Ждём анимацию + паузу перед следующим элементом
+            sequence.AppendInterval(stepDuration + postRebuildDelay);
+            sequence.OnComplete((() =>
+            {
+                Debug.Log("Animation Finished");
+            }));
         }
     }
     

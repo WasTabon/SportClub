@@ -98,6 +98,7 @@ public class ActionsManager : MonoBehaviour
             else
             {
                 ClubManager.Instance.SetMoney(ClubManager.Instance.GetMoney() - 50);
+                
             }
         }
         else if (_costType == CostType.Management)

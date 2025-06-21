@@ -27528,6 +27528,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68bb489bbbcf55a4a8e0205b4b146da3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _verticalScrollbar: {fileID: 131687126}
   _scrollRect: {fileID: 474463399}
   _scrollContentToClear: {fileID: 2059492423}
   _mainMenuButton: {fileID: 929164449}

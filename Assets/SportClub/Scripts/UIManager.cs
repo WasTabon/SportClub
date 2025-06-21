@@ -147,6 +147,33 @@ public class UIManager : MonoBehaviour
    {
       panel.DOScale(Vector3.one, _timeOpenPanel);
    }
+
+   public void ShowPanelFinishDay()
+   {
+      
+   }
+   
+   public void AnimateNumberWithPlus(TextMeshProUGUI text, int targetValue, string label, float duration = 1f)
+   {
+      int currentValue = 0;
+
+      DOTween.To(() => currentValue, x =>
+      {
+         currentValue = x;
+         text.text = $"+{currentValue} {label}";
+      }, targetValue, duration).SetEase(Ease.OutQuad);
+   }
+
+   public void AnimateNumberPlain(TextMeshProUGUI text, int targetValue, string label, float duration = 1f)
+   {
+      int currentValue = 0;
+
+      DOTween.To(() => currentValue, x =>
+      {
+         currentValue = x;
+         text.text = $"{currentValue} {label}";
+      }, targetValue, duration).SetEase(Ease.OutQuad);
+   }
     
    public void ShowWarning(Warnings warning)
    {
