@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 [Serializable]
 public struct WarningEntry
@@ -60,6 +61,17 @@ public class UIManager : MonoBehaviour
    public static UIManager Instance;
 
    public RectTransform _loadingScreen;
+
+   [SerializeField] private TextMeshProUGUI _hypeText;
+   [SerializeField] private TextMeshProUGUI _reputationText;
+   [SerializeField] private TextMeshProUGUI _moneyText;
+   [SerializeField] private TextMeshProUGUI _fansText;
+   [SerializeField] private TextMeshProUGUI _loyalityText;
+   [SerializeField] private TextMeshProUGUI _levelText;
+   [SerializeField] private TextMeshProUGUI _timeText;
+   
+   [SerializeField] private Image _hypeFillImage;
+   [SerializeField] private Image _reputationFillImage;
    
    [SerializeField] private float _timeOpenPanel;
    [SerializeField] private float _timeClosePanel;
@@ -114,6 +126,16 @@ public class UIManager : MonoBehaviour
             popup.localScale = Vector3.zero;
          }
       }
+
+      _hypeText.text = $"{ClubManager.Instance.GetHype()}/100";
+      _reputationText.text = $"{ClubManager.Instance.GetReputation()}/100";
+      _levelText.text = $"{ClubManager.Instance.GetLevel()} Level";
+      _fansText.text = $"{ClubManager.Instance.GetFans()} Fans";
+      _loyalityText.text = $"{ClubManager.Instance.GetLoyality()}/100";
+      _moneyText.text = $"{ClubManager.Instance.GetMoney()}$";
+      
+      _hypeFillImage.DOFillAmount(ClubManager.Instance.GetHype() / 100f, 0.15f);
+      _reputationFillImage.DOFillAmount(ClubManager.Instance.GetReputation() / 100f, 0.15f);
    }
 
    public void ClosePanel(RectTransform panel)
