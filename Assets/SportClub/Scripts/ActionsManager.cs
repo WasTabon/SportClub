@@ -95,6 +95,10 @@ public class ActionsManager : MonoBehaviour
                 UIManager.Instance.ShowPopup(Popups.NotEnoughResources);
                 return;
             }
+            else
+            {
+                ClubManager.Instance.SetMoney(ClubManager.Instance.GetMoney() - 50);
+            }
         }
         else if (_costType == CostType.Management)
         {
@@ -102,6 +106,10 @@ public class ActionsManager : MonoBehaviour
             {
                 UIManager.Instance.ShowPopup(Popups.NotEnoughResources);
                 return;
+            }
+            else
+            {
+                ClubManager.Instance.SetHype(ClubManager.Instance.GetHype() - 10);
             }
         }
         else if (_costType == CostType.Merch)
@@ -111,6 +119,10 @@ public class ActionsManager : MonoBehaviour
                 UIManager.Instance.ShowPopup(Popups.NotEnoughResources);
                 return;
             }
+            else
+            {
+                ClubManager.Instance.SetMoney(ClubManager.Instance.GetMoney() - 100);
+            }
         }
         else if (_costType == CostType.Sabotage)
         {
@@ -118,6 +130,10 @@ public class ActionsManager : MonoBehaviour
             {
                 UIManager.Instance.ShowPopup(Popups.NotEnoughResources);
                 return;
+            }
+            else
+            {
+                ClubManager.Instance.SetFans(ClubManager.Instance.GetFans() - 5);
             }
         }
         
