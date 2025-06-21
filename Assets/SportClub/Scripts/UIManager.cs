@@ -131,11 +131,11 @@ public class UIManager : MonoBehaviour
       _reputationText.text = $"{ClubManager.Instance.GetReputation()}/100";
       _levelText.text = $"{ClubManager.Instance.GetLevel()} Level";
       _fansText.text = $"{ClubManager.Instance.GetFans()} Fans";
-      _loyalityText.text = $"{ClubManager.Instance.GetLoyality()}/100";
+      _loyalityText.text = $"{ClubManager.Instance.GetLoyality()}/100 Loyalty";
       _moneyText.text = $"{ClubManager.Instance.GetMoney()}$";
       
-      _hypeFillImage.DOFillAmount(ClubManager.Instance.GetHype() / 100f, 0.15f);
-      _reputationFillImage.DOFillAmount(ClubManager.Instance.GetReputation() / 100f, 0.15f);
+      _hypeFillImage.DOFillAmount(ClubManager.Instance.GetHype() / 100f, 0.3f);
+      _reputationFillImage.DOFillAmount(ClubManager.Instance.GetReputation() / 100f, 0.3f);
    }
 
    public void ClosePanel(RectTransform panel)

@@ -718,8 +718,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _loadingScreen: {fileID: 1330196932}
-  _hypeFillImage: {fileID: 0}
-  _reputationFillImage: {fileID: 0}
+  _hypeText: {fileID: 241632857}
+  _reputationText: {fileID: 1913397756}
+  _moneyText: {fileID: 1241650083}
+  _fansText: {fileID: 985121249}
+  _loyalityText: {fileID: 12656613}
+  _levelText: {fileID: 1173631193}
+  _timeText: {fileID: 710643242}
+  _hypeFillImage: {fileID: 785011391}
+  _reputationFillImage: {fileID: 160891688}
   _timeOpenPanel: 0
   _timeClosePanel: 0.15
   _timeWarning: 0.5
@@ -1109,7 +1116,7 @@ GameObject:
   - component: {fileID: 160891689}
   - component: {fileID: 160891688}
   m_Layer: 5
-  m_Name: HypeBackground (1)
+  m_Name: ReputationBackground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7397,7 +7404,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &578085555
 RectTransform:
   m_ObjectHideFlags: 0
@@ -21069,7 +21076,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1330196932
 RectTransform:
   m_ObjectHideFlags: 0
@@ -21850,7 +21857,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1383019530
 RectTransform:
   m_ObjectHideFlags: 0
@@ -21963,12 +21970,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerName: 
-  _money: 0
-  _hype: 0
-  _reputation: 0
-  _fans: 0
-  _loyality: 0
-  _level: 0
+  _money: 100
+  _hype: 100
+  _reputation: 100
+  _fans: 100
+  _loyality: 100
+  _level: 100
 --- !u!1 &1390646052
 GameObject:
   m_ObjectHideFlags: 0
@@ -27521,6 +27528,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68bb489bbbcf55a4a8e0205b4b146da3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _scrollRect: {fileID: 474463399}
+  _scrollContentToClear: {fileID: 2059492423}
+  _mainMenuButton: {fileID: 929164449}
   _tabs:
   - Button: {fileID: 929164449}
     Panel: {fileID: 2070565708}
@@ -33871,7 +33881,31 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2130081695}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 111717910}
+        m_TargetAssemblyTypeName: PowerLines.Scripts.MusicController, Assembly-CSharp
+        m_MethodName: PlayClickSound
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1733130346}
+        m_TargetAssemblyTypeName: TabsHandler, Assembly-CSharp
+        m_MethodName: FinishDay
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &2130081695
 MonoBehaviour:
   m_ObjectHideFlags: 0

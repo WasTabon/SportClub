@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using Random = UnityEngine.Random;
 
 [System.Serializable]
 public class TabEntry
@@ -13,6 +14,10 @@ public class TabEntry
 
 public class TabsHandler : MonoBehaviour
 {
+    [SerializeField] private ScrollRect _scrollRect;
+    [SerializeField] private RectTransform _scrollContentToClear;
+    [SerializeField] private Button _mainMenuButton;
+    
     [SerializeField] private List<TabEntry> _tabs;
     [SerializeField] private RectTransform _indicator;
     [SerializeField] private float _moveDuration = 0.25f;
@@ -27,6 +32,81 @@ public class TabsHandler : MonoBehaviour
         Debug.Log($"<color=yellow> Tabs Handler: All tabs exept first one should be disabled when game starts</color>");
     }
 
+    public void FinishDay()
+    {
+        OpenTabByButton(_mainMenuButton);
+    
+        float totalWait = Mathf.Max(_panelMoveDuration, _moveDuration);
+
+        DOVirtual.DelayedCall(totalWait, () =>
+        {
+            ScrollToTop(() =>
+            {
+                ClearContentWithAnimation();
+            });
+        });
+    }
+    
+    private void ClearContentWithAnimation()
+    {
+        var children = new List<Transform>();
+        foreach (Transform child in _scrollContentToClear)
+            children.Add(child);
+
+        Sequence sequence = DOTween.Sequence();
+
+        float stepDuration = 0.5f;
+
+        for (int i = 0; i < children.Count; i++)
+        {
+            Transform child = children[i];
+
+            // Ensure CanvasGroup exists
+            CanvasGroup cg = child.GetComponent<CanvasGroup>();
+            if (cg == null) cg = child.gameObject.AddComponent<CanvasGroup>();
+
+            // Reset transforms before animation (in case reused)
+            child.localScale = Vector3.one;
+            child.localRotation = Quaternion.identity;
+            cg.alpha = 1;
+
+            // Create local scope copy for closure
+            int index = i;
+
+            sequence.AppendCallback(() =>
+            {
+                // Animate current element
+                Sequence childSeq = DOTween.Sequence();
+
+                childSeq.Join(cg.DOFade(0, stepDuration));
+                childSeq.Join(child.DOScale(Vector3.zero, stepDuration).SetEase(Ease.InBack));
+                childSeq.Join(child.DOLocalMoveY(child.localPosition.y - 20f, stepDuration).SetEase(Ease.InQuad));
+                childSeq.Join(child.DORotate(new Vector3(0, 0, Random.Range(-30f, 30f)), stepDuration).SetEase(Ease.OutCubic));
+
+                childSeq.OnComplete(() =>
+                {
+                    Destroy(child.gameObject);
+                    LayoutRebuilder.ForceRebuildLayoutImmediate(_scrollContentToClear);
+                });
+            });
+
+            // Подождать, прежде чем приступить к следующему
+            sequence.AppendInterval(stepDuration);
+        }
+    }
+    
+    private void ScrollToTop(Action onComplete)
+    {
+        float start = _scrollRect.verticalNormalizedPosition;
+        float duration = 0.5f;
+
+        DOTween.To(() => _scrollRect.verticalNormalizedPosition, 
+                x => _scrollRect.verticalNormalizedPosition = x, 
+                1f, duration)
+            .SetEase(Ease.OutCubic)
+            .OnComplete(() => onComplete?.Invoke());
+    }
+    
     public void OpenTabByButton(Button clickedButton)
     {
         int newIndex = _tabs.FindIndex(tab => tab.Button == clickedButton);
