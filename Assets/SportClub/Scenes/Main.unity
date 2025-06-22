@@ -7945,7 +7945,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &542641861
 RectTransform:
   m_ObjectHideFlags: 0
@@ -8333,7 +8333,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &578085555
 RectTransform:
   m_ObjectHideFlags: 0
@@ -26569,7 +26569,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1532870683
 RectTransform:
   m_ObjectHideFlags: 0
@@ -36320,11 +36320,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _priceText: {fileID: 703420354}
   _upgradeCostAmount: f4010000f4010000bc020000bc020000ee020000ee02000020030000dc050000881300001027000050c30000
-  _level2: []
-  _level3: []
-  _level4: []
-  _level5: []
-  _level6: []
+  _level2:
+  - {fileID: 381701745}
+  _level3:
+  - {fileID: 810748381}
+  _level4:
+  - {fileID: 426915623}
+  _level5:
+  - {fileID: 1929447528}
+  _level6:
+  - {fileID: 1270518144}
+  - {fileID: 981743723}
   _level7: []
   _level8: []
   _level9: []

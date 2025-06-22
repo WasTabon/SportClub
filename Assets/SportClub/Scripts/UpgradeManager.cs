@@ -172,9 +172,28 @@ public class UpgradeManager : MonoBehaviour
 
         ClubManager.Instance.SetLevel(savedLevel);
 
+        // Включаем объекты открытых уровней
         for (int i = 2; i <= savedLevel; i++)
         {
             EnableLevelObjects(i);
+        }
+
+        // Выключаем объекты уровней, которые еще не открыты
+        for (int i = savedLevel + 1; i <= 11; i++)
+        {
+            DisableLevelObjects(i);
+        }
+    }
+
+    private void DisableLevelObjects(int level)
+    {
+        GameObject[] levelObjects = GetObjectsForLevel(level);
+        if (levelObjects == null) return;
+
+        foreach (var obj in levelObjects)
+        {
+            if (obj != null)
+                obj.SetActive(false);
         }
     }
 }
