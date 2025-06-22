@@ -56,7 +56,8 @@ public enum Popups
    Investigation,
    Fans,
    Backlash,
-   NotEnoughResources
+   NotEnoughResources,
+   LevelUpgraded
 }
 
 public class UIManager : MonoBehaviour

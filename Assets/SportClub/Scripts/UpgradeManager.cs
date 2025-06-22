@@ -1,8 +1,11 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class UpgradeManager : MonoBehaviour
 {
+    [SerializeField] private TextMeshProUGUI _priceText;
+    
     [SerializeField] private List<int> _upgradeCostAmount;
 
     [SerializeField] private GameObject[] _level2;
@@ -18,11 +21,30 @@ public class UpgradeManager : MonoBehaviour
 
     [SerializeField] private AudioSource _upgradeSound;
 
+    [SerializeField] private TextMeshProUGUI _levelDescriptionsText;
+    
     private const string UpgradeLevelKey = "UpgradedLevel";
+    
+    private readonly string[] _levelDescriptions = new string[]
+    {
+        "Level 1: PR and partial club management access",
+        "Level 2: PR and full club management access",
+        "Level 3: All of the above, plus basic merchandise sales",
+        "Level 4: All of the above, plus full control over merchandise",
+        "Level 5: All of the above, plus the ability to carry out minor sabotages",
+        "Level 6: All of the above, plus full control over sabotages",
+        "Level 7: Increased income generation",
+        "Level 8: Increased reputation gain",
+        "Level 9: Increased fan gain",
+        "Level 10: Increased hype gain",
+        "Level 11: Increased loyalty gain"
+    };
 
     private void Start()
     {
         LoadUpgradeState();
+        UpdateLevelDescriptionUI();
+        UpdatePriceText();
     }
 
     public void UpgradeLevel()
@@ -62,9 +84,36 @@ public class UpgradeManager : MonoBehaviour
             _upgradeSound.Play();
 
         // Показываем попап
-        //UIManager.Instance.ShowPopup(Popups.LevelUpgraded);
+        UIManager.Instance.ShowPopup(Popups.LevelUpgraded);
+        
+        UpdateLevelDescriptionUI();
+        UpdatePriceText();
     }
 
+    private void UpdatePriceText()
+    {
+        int currentLevel = ClubManager.Instance.GetLevel();
+
+        // Если достигнут максимальный уровень — скрываем цену или пишем что апгрейд недоступен
+        if (currentLevel >= 11)
+        {
+            if (_priceText != null)
+                _priceText.text = "Max Level";
+            return;
+        }
+
+        if (_upgradeCostAmount.Count < currentLevel + 1)
+        {
+            if (_priceText != null)
+                _priceText.text = "No price set";
+            return;
+        }
+
+        int nextCost = _upgradeCostAmount[currentLevel]; // индекс текущего уровня + 1, т.к. уровни начинаются с 1
+        if (_priceText != null)
+            _priceText.text = $"Price: {nextCost}$";
+    }
+    
     private void EnableLevelObjects(int level)
     {
         GameObject[] levelObjects = GetObjectsForLevel(level);
@@ -95,6 +144,28 @@ public class UpgradeManager : MonoBehaviour
         };
     }
 
+    private void UpdateLevelDescriptionUI()
+    {
+        if (_levelDescriptionsText == null)
+        {
+            Debug.LogWarning("LevelDescriptionsText не назначен в инспекторе.");
+            return;
+        }
+
+        int currentLevel = ClubManager.Instance.GetLevel();
+        string result = "";
+
+        for (int i = 0; i < _levelDescriptions.Length; i++)
+        {
+            if (i < currentLevel) // Зачеркнуть открытые уровни
+                result += $"<s>{_levelDescriptions[i]}</s>\n\n";
+            else
+                result += _levelDescriptions[i] + "\n\n";
+        }
+
+        _levelDescriptionsText.text = result;
+    }
+    
     private void LoadUpgradeState()
     {
         int savedLevel = PlayerPrefs.GetInt(UpgradeLevelKey, 1); // по умолчанию 1
