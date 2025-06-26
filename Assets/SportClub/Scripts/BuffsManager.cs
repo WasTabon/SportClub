@@ -39,12 +39,6 @@ public class BuffsManager : MonoBehaviour
     
     [SerializeField] private RectTransform _content;
     [SerializeField] private RectTransform _buff;
-
-    [SerializeField] private Sprite _viralIcon;
-    [SerializeField] private Sprite _negativeReactionIcon;
-    [SerializeField] private Sprite _fansUnitedIcon;
-    [SerializeField] private Sprite _fansConflictIcon;
-    [SerializeField] private Sprite _cleanStreetsIcon;
     
     [SerializeField] private Sprite incomeIcon;
     [SerializeField] private Sprite reputationIcon;
