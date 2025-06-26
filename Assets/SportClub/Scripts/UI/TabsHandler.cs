@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using PowerLines.Scripts;
 using TMPro;
 using Random = UnityEngine.Random;
 
@@ -16,6 +17,8 @@ public class TabEntry
 public class TabsHandler : MonoBehaviour
 {
     public static TabsHandler Instance;
+
+    public AudioClip _removeItemSound;
     
     [SerializeField] private Scrollbar _verticalScrollbar;
     [SerializeField] private ScrollRect _scrollRect;
@@ -107,6 +110,10 @@ public class TabsHandler : MonoBehaviour
                 childSeq.Join(child.DOLocalMoveY(child.localPosition.y - 20f, stepDuration).SetEase(Ease.InQuad));
                 childSeq.Join(child.DORotate(new Vector3(0, 0, Random.Range(-30f, 30f)), stepDuration).SetEase(Ease.OutCubic));
 
+                childSeq.OnStart((() =>
+                {
+                    MusicController.Instance.PlaySpecificSound(_removeItemSound);
+                }));
                 childSeq.OnComplete(() =>
                 {
                     // Удаляем объект

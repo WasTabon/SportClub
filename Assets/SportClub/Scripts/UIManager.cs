@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
+using PowerLines.Scripts;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -64,6 +65,10 @@ public class UIManager : MonoBehaviour
 {
    public static UIManager Instance;
 
+   public AudioClip _popupSound;
+   public AudioClip _warningSound;
+   public AudioClip _finishDaySound;
+   
    public TextMeshProUGUI timeText;
    
    public RectTransform _loadingScreen;
@@ -344,6 +349,7 @@ public class UIManager : MonoBehaviour
         buttonGroup.DOFade(1f, 0.3f);
         _finishDayButton.DOScale(Vector3.one, 0.3f).SetEase(Ease.OutBack);
         _finishDayButton.DOPunchScale(Vector3.one * 0.15f, 0.4f, 10, 1);
+        MusicController.Instance.PlaySpecificSound(_finishDaySound);
     });
    }
    
@@ -376,13 +382,19 @@ public class UIManager : MonoBehaviour
    {
       ResetAllWarnings();
       if (_warnings.TryGetValue(warning, out var warningText))
+      {
          HandleWarning(warningText);
+         MusicController.Instance.PlaySpecificSound(_warningSound);
+      }
    }
 
    public void ShowPopup(Popups popup)
    {
       if (_popups.TryGetValue(popup, out var popupPanel))
+      {
          HandlePopup(popupPanel);
+         MusicController.Instance.PlaySpecificSound(_popupSound);
+      }
    }
 
    public void SetNameOnPanel(string name)

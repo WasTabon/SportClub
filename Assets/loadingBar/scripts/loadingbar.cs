@@ -2,18 +2,23 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class loadingbar : MonoBehaviour {
-
+public class loadingbar : MonoBehaviour
+{
     private RectTransform rectComponent;
     private Image imageComp;
     public float speed = 0.0f;
     private TextMeshProUGUI textComp;
-    
+
     private string[] loadingFrames = { "Processing", "Processing.", "Processing..", "Processing..." };
     private float textFrameDuration = 0.3f;
     private float textTimer = 0f;
     private int currentFrame = 0;
-    
+
+    public RectTransform panel; // Панель для проверки размера
+    public AudioSource loopingAudio; // АудиоИсточник для воспроизведения звука
+
+    private bool isSoundPlaying = false;
+
     private void Start()
     {
         rectComponent = GetComponent<RectTransform>();
@@ -34,14 +39,20 @@ public class loadingbar : MonoBehaviour {
         {
             textComp.text = loadingFrames[0];
         }
+
+        if (loopingAudio != null)
+        {
+            loopingAudio.loop = true; // Убедитесь, что звук зациклен
+        }
     }
 
     private void Update()
     {
+        // Обновление прогресс-бара и текста
         if (imageComp.fillAmount < 1f)
         {
             imageComp.fillAmount += Time.deltaTime * speed;
-            
+
             textTimer += Time.deltaTime;
             if (textTimer >= textFrameDuration)
             {
@@ -63,6 +74,25 @@ public class loadingbar : MonoBehaviour {
                 textComp.text = loadingFrames[0];
             }
         }
+
+        // Проверка размера панели и управление звуком
+        if (panel != null && loopingAudio != null)
+        {
+            bool panelHasSize = panel.localScale.x > 0;
+            
+            Debug.Log($"Panel size: {panel.localScale.x}, State: {panelHasSize}");
+
+            if (panelHasSize && !isSoundPlaying)
+            {
+                loopingAudio.Play();
+                isSoundPlaying = true;
+            }
+            else if (!panelHasSize && isSoundPlaying)
+            {
+                loopingAudio.Stop();
+                isSoundPlaying = false;
+            }
+        }
     }
 
     public void ResetBar()
@@ -75,5 +105,4 @@ public class loadingbar : MonoBehaviour {
             textComp.text = loadingFrames[0];
         }
     }
-    
 }
