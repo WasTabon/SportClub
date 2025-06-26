@@ -295,6 +295,7 @@ public class UIManager : MonoBehaviour
    public void ShowPanelFinishDay()
    {
       _finishDayPanel.DOScale(Vector3.one, 0.15f);
+      MusicController.Instance.PlaySpecificSound(_finishDaySound);
       _finishDayPanel.rotation = Quaternion.Euler(0, 0, 10);
     _finishDayPanel.DOScale(Vector3.one, 0.3f).SetEase(Ease.OutBack);
     _finishDayPanel.DORotate(Vector3.zero, 0.3f).SetEase(Ease.OutQuad);
@@ -349,7 +350,7 @@ public class UIManager : MonoBehaviour
         buttonGroup.DOFade(1f, 0.3f);
         _finishDayButton.DOScale(Vector3.one, 0.3f).SetEase(Ease.OutBack);
         _finishDayButton.DOPunchScale(Vector3.one * 0.15f, 0.4f, 10, 1);
-        MusicController.Instance.PlaySpecificSound(_finishDaySound);
+       
     });
    }
    
