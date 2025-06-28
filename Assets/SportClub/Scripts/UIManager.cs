@@ -176,7 +176,7 @@ public class UIManager : MonoBehaviour
       int money = ClubManager.Instance.GetMoney();
       if (money != _prevMoney)
       {
-         AnimateNumberPlain(_moneyText, money, "$");
+         AnimateNumberPlain(_moneyText, money, "");
          _prevMoney = money;
       }
 
