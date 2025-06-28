@@ -20,6 +20,9 @@ public class TabsHandler : MonoBehaviour
 
     public AudioClip _removeItemSound;
     
+    [SerializeField] private Color _activeTabColor = new Color(0xF7 / 255f, 0x71 / 255f, 0x29 / 255f); // #F77129
+    [SerializeField] private Color _inactiveTabColor = Color.white; 
+    
     [SerializeField] private Scrollbar _verticalScrollbar;
     [SerializeField] private ScrollRect _scrollRect;
     [SerializeField] private RectTransform _scrollContentToClear;
@@ -159,7 +162,25 @@ public class TabsHandler : MonoBehaviour
 
         AnimateTabTransition(_currentTabIndex, newIndex);
         MoveIndicatorTo(_tabs[newIndex].Button.GetComponent<RectTransform>());
+
+        // Анимировать цвет кнопок
+        AnimateTabButtonColors(newIndex);
+
         _currentTabIndex = newIndex;
+    }
+    
+    private void AnimateTabButtonColors(int activeIndex)
+    {
+        float colorTweenDuration = 0.3f;
+
+        for (int i = 0; i < _tabs.Count; i++)
+        {
+            Image buttonImage = _tabs[i].Button.GetComponent<Image>();
+            if (buttonImage == null) continue;
+
+            Color targetColor = i == activeIndex ? _activeTabColor : _inactiveTabColor;
+            buttonImage.DOColor(targetColor, colorTweenDuration).SetEase(Ease.OutQuad);
+        }
     }
 
     private void AnimateTabTransition(int oldIndex, int newIndex)
